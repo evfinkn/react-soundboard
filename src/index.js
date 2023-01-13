@@ -6,7 +6,7 @@ import "./index.css";
 const useSounds = (urls) => {
   const objs = {};
   urls.forEach(
-    (url) => (objs[url] = { playing: false, audio: new Audio(url), url: url })
+    (url) => (objs[url] = { playing: false, audio: new Audio(url), url: url, name: url.pathname.split("/").at(-1) })
   );
   const [sounds, setSounds] = useState(objs);
 
@@ -42,14 +42,7 @@ const useSounds = (urls) => {
     });
   });
 
-  const handleEnded = (event) => {
-    // target is the Audio instance, src is the full url for the sound
-    let url = new URL(event.target.src);
-    // .pathname.substring(1) to remove the leading "http://localhost:3000/"
-    // decodeURI in case the file name / path contains spaces
-    url = decodeURI(url.pathname.substring(1));
-    sounds[url].toggle();
-  };
+  const handleEnded = (event) => sounds[event.target.src].toggle();
 
   // run on mount and unmount
   // handles updating the audio's "playing" property after the audio has ended
@@ -74,7 +67,7 @@ const useSounds = (urls) => {
 const Sound = ({ sound }) => (
   <button className="Sound" onClick={sound.toggle}>
     {/* split("/").at(-1) to only show the file name (i.e. to exclude "audio/.../") */}
-    {sound.playing ? <BiPause /> : <BiPlay />} {sound.url.split("/").at(-1)}
+    {sound.playing ? <BiPause /> : <BiPlay />} {sound.name}
   </button>
 );
 
@@ -109,8 +102,6 @@ const SoundCategory = ({ name, children, depth = 0 }) => {
 };
 
 const Soundboard = ({ urls }) => {
-  // only files from the audio directory (and its subdirectories) are valid
-  urls = urls.filter((url) => url.startsWith("audio/"));
   const sounds = useSounds(urls);
 
   const categories = {};
@@ -142,10 +133,9 @@ const Soundboard = ({ urls }) => {
   // or all sounds (if the name == ""). It's also nice because "" is sorted first,
   // so we don't need to filter for the sounds to put them before the categories
   urls.sort().forEach((url) => {
-    const path = url.split("/");
+    const path = url.pathname.substring(1).split("/");
     let currentSubObj = categories;
-    for (let i = 1; i < path.length - 1; i++) {
-      // exclude "audio" and the actual file name
+    for (let i = 0; i < path.length - 1; i++) {
       if (currentSubObj[path[i]] === undefined) {
         currentSubObj[path[i]] = {};
       }
@@ -161,6 +151,10 @@ const Soundboard = ({ urls }) => {
   });
 };
 
-const urls = [];
+const urlStrings = [];
+// passing window.location.href to the URL constructor makes it so that
+// if urlString is a relative path, it is prepended with the current url.
+// e.g. "audio/sound1.mp3" => "http://localhost:3000/audio/sound1.mp3"
+const urls = urlStrings.map(urlString => new URL(urlString, window.location.href));
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Soundboard urls={urls} />);
