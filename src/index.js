@@ -6,7 +6,15 @@ import "./index.css";
 const useSounds = (urls) => {
   const objs = {};
   urls.forEach(
-    (url) => (objs[url] = { playing: false, audio: new Audio(url), url: url, name: url.pathname.split("/").at(-1) })
+    (url) =>
+      (objs[url] = {
+        playing: false,
+        audio: new Audio(url),
+        url: url,
+        // .split("/").at(-1) gets the audio file name
+        // decodeURI to show the expected file name i.e. including spaces
+        name: decodeURI(url.pathname.split("/").at(-1)),
+      })
   );
   const [sounds, setSounds] = useState(objs);
 
@@ -133,6 +141,8 @@ const Soundboard = ({ urls }) => {
   // or all sounds (if the name == ""). It's also nice because "" is sorted first,
   // so we don't need to filter for the sounds to put them before the categories
   urls.sort().forEach((url) => {
+    // .pathname.substring(1) to remove the leading host part of the url
+    // e.g. "http://localhost:3000/audio/sound1.mp3" => "audio/sound.mp3"
     const path = url.pathname.substring(1).split("/");
     let currentSubObj = categories;
     for (let i = 0; i < path.length - 1; i++) {
@@ -155,6 +165,9 @@ const urlStrings = [];
 // passing window.location.href to the URL constructor makes it so that
 // if urlString is a relative path, it is prepended with the current url.
 // e.g. "audio/sound1.mp3" => "http://localhost:3000/audio/sound1.mp3"
-const urls = urlStrings.map(urlString => new URL(urlString, window.location.href));
+const urls = urlStrings.map(
+  (urlString) => new URL(urlString, window.location.href)
+);
+console.log(urls);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Soundboard urls={urls} />);
