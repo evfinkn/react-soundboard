@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { BiPause, BiPlay } from "react-icons/bi";
+import { BiPause, BiPlay, BiChevronRight, BiChevronDown } from "react-icons/bi";
 import "./index.css";
 
 const useSounds = (urls) => {
@@ -72,9 +72,42 @@ const useSounds = (urls) => {
   return sounds;
 };
 
+const Collapsible = ({ heading, depth, children }) => {
+  const [hidden, setHidden] = useState(false);
+
+  const span = <span>{hidden ? <BiChevronRight /> : <BiChevronDown />}</span>;
+  const content = (
+    <div className="Collapsible-content" hidden={hidden}>
+      {children}
+    </div>
+  );
+  // the fontSize makes it so deeper nested headings are smaller
+  const h2 = (
+    <h2 style={{ fontSize: Math.max(32 - depth * 3, 20) }}>
+      {span}
+      {heading}
+    </h2>
+  );
+  const button = (
+    <button
+      className="Collapsible-button"
+      onClick={() => {
+        setHidden(!hidden);
+      }}
+    >
+      {h2}
+    </button>
+  );
+  return (
+    <div>
+      {button}
+      {content}
+    </div>
+  );
+};
+
 const Sound = ({ sound }) => (
   <button className="Sound" onClick={sound.toggle}>
-    {/* split("/").at(-1) to only show the file name (i.e. to exclude "audio/.../") */}
     {sound.playing ? <BiPause /> : <BiPlay />} {sound.name}
   </button>
 );
@@ -92,11 +125,8 @@ const SoundCategory = ({ name, children, depth = 0 }) => {
       </div>
     );
   }
-  // make the nested headers smaller the more nested they are
-  const h2Style = { fontSize: Math.max(32 - depth * 3, 20) };
   return (
-    <div>
-      <h2 style={h2Style}>{name}</h2>
+    <Collapsible heading={name} depth={depth}>
       {Object.entries(children).map(([subname, subchildren]) => (
         <SoundCategory
           key={subname}
@@ -105,7 +135,7 @@ const SoundCategory = ({ name, children, depth = 0 }) => {
           depth={depth + 1}
         />
       ))}
-    </div>
+    </Collapsible>
   );
 };
 
@@ -168,6 +198,5 @@ const urlStrings = [];
 const urls = urlStrings.map(
   (urlString) => new URL(urlString, window.location.href)
 );
-console.log(urls);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Soundboard urls={urls} />);

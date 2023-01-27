@@ -1,33 +1,40 @@
 .SoundCategory {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .SoundCategory h2 {
-    /* top and bottom | left and right */
-    margin: 15px 5px;
+  /* top and bottom | left and right */
+  margin: 15px 5px;
 }
 
 .Sound {
-    background-color: darksalmon;
-    border: none;
-    border-radius: 8px;
-    height: 100px;
-    margin: 15px;
-    /* top and bottom | left and right */
-    padding: 0px 15px;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    width: auto;
+  background-color: darksalmon;
+  border: none;
+  border-radius: 8px;
+  height: 100px;
+  margin: 15px;
+  /* top and bottom | left and right */
+  padding: 0px 15px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  width: auto;
+}
+
+.Collapsible-button {
+  cursor: pointer;
+  color: inherit;
+  background-color: inherit;
+  border: none;
 }
 
 /* https://stackoverflow.com/a/65297702 */
 /* make button color darker on hover */
-button:hover {
-    background-image: linear-gradient(rgb(0 0 0/10%) 0 0);
+.Sound:hover {
+  background-image: linear-gradient(rgb(0 0 0/10%) 0 0);
 }
 
 /* make button color darker on click */
-button:active {
-    background-image: linear-gradient(rgb(0 0 0/17.5%) 0 0);
+.Sound:active {
+  background-image: linear-gradient(rgb(0 0 0/17.5%) 0 0);
 }
