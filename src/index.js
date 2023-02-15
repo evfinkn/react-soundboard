@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom/client";
-import { BiPause, BiPlay, BiChevronRight, BiChevronDown } from "react-icons/bi";
+import { IconContext } from "react-icons";
+import {
+  BiPause,
+  BiPlay,
+  BiChevronRight,
+  BiChevronDown,
+  BiDotsVerticalRounded,
+} from "react-icons/bi";
 import "./index.css";
 
 const useSounds = (urls) => {
@@ -11,9 +18,6 @@ const useSounds = (urls) => {
         playing: false,
         audio: new Audio(url),
         url: url,
-        // .split("/").at(-1) gets the audio file name
-        // decodeURI to show the expected file name i.e. including spaces
-        name: decodeURI(url.pathname.split("/").at(-1)),
       })
   );
   const [sounds, setSounds] = useState(objs);
@@ -75,7 +79,13 @@ const useSounds = (urls) => {
 const Collapsible = ({ heading, depth, children }) => {
   const [hidden, setHidden] = useState(false);
 
-  const span = <span>{hidden ? <BiChevronRight /> : <BiChevronDown />}</span>;
+  const span = (
+    <span>
+      <IconContext.Provider value={{ className: "icon" }}>
+        {hidden ? <BiChevronRight /> : <BiChevronDown />}
+      </IconContext.Provider>
+    </span>
+  );
   const content = (
     <div className="Collapsible-content" hidden={hidden}>
       {children}
@@ -83,18 +93,16 @@ const Collapsible = ({ heading, depth, children }) => {
   );
   // the fontSize makes it so deeper nested headings are smaller
   const h2 = (
-    <h2 style={{ fontSize: Math.max(32 - depth * 3, 20) }}>
+    <h2
+      style={{ fontSize: Math.max(32 - depth * 3, 20) }}
+      className="Collapsible-heading"
+    >
       {span}
       {heading}
     </h2>
   );
   const button = (
-    <button
-      className="Collapsible-button"
-      onClick={() => {
-        setHidden(!hidden);
-      }}
-    >
+    <button className="Collapsible-button" onClick={() => setHidden(!hidden)}>
       {h2}
     </button>
   );
@@ -106,11 +114,78 @@ const Collapsible = ({ heading, depth, children }) => {
   );
 };
 
-const Sound = ({ sound }) => (
-  <button className="Sound" onClick={sound.toggle}>
-    {sound.playing ? <BiPause /> : <BiPlay />} {sound.name}
-  </button>
-);
+const Modal = ({ children, isOpen, onClose }) => {
+  const modal = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      modal.current.showModal();
+    } else {
+      modal.current.close();
+    }
+  }, [isOpen]);
+
+  return (
+    <dialog ref={modal} className="Modal" onClose={onClose}>
+      <div className="Modal-content">{children}</div>
+    </dialog>
+  );
+};
+
+const SoundSettingsModal = ({ isOpen, onClose, onUpdateName }) => {
+  const nameInput = useRef(null);
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <label>
+        {"Enter a name: "}
+        <input type="text" placeholder="name" ref={nameInput}></input>
+      </label>
+      <button
+        value="confirm"
+        onClick={() => onUpdateName(nameInput.current.value)}
+      >
+        Confirm
+      </button>
+      <br />
+      <br />
+      <button onClick={onClose}>Close</button>
+    </Modal>
+  );
+};
+
+const Sound = ({ sound }) => {
+  // .split("/").at(-1) gets the audio file name
+  // decodeURI to show the expected file name i.e. including spaces
+  const [name, setName] = useState(
+    decodeURI(sound.url.pathname.split("/").at(-1))
+  );
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const dialog = (
+    <SoundSettingsModal
+      isOpen={dialogIsOpen}
+      onClose={() => setDialogIsOpen(false)}
+      onUpdateName={(name) => {
+        setName(name);
+        setDialogIsOpen(false);
+      }}
+    ></SoundSettingsModal>
+  );
+  return (
+    <div className="Sound-div">
+      <button className="Sound" title={name} onClick={sound.toggle}>
+        <IconContext.Provider value={{ className: "icon" }}>
+          {sound.playing ? <BiPause /> : <BiPlay />} {name}
+        </IconContext.Provider>
+      </button>
+      <button className="Sound-settings" onClick={() => setDialogIsOpen(true)}>
+        <IconContext.Provider value={{ className: "icon" }}>
+          <BiDotsVerticalRounded />
+        </IconContext.Provider>
+      </button>
+      {dialog}
+    </div>
+  );
+};
 
 const SoundCategory = ({ name, children, depth = 0 }) => {
   // every url path (category path) ends with the empty string to indicate that
