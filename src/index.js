@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom/client";
 import { IconContext } from "react-icons";
 import {
-  BiPause,
-  BiPlay,
   BiChevronRight,
   BiChevronDown,
   BiDotsVerticalRounded,
+  BiPause,
+  BiPlay,
+  BiX,
 } from "react-icons/bi";
 import "./index.css";
 
@@ -102,7 +103,7 @@ const Collapsible = ({ heading, depth, children }) => {
     </h2>
   );
   const button = (
-    <button className="Collapsible-button" onClick={() => setHidden(!hidden)}>
+    <button className="icon-button" onClick={() => setHidden(!hidden)}>
       {h2}
     </button>
   );
@@ -125,9 +126,16 @@ const Modal = ({ children, isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // put children in div instead of directly in dialog because otherwise
+  // the padding is messed up (when applied to the dialog)
   return (
     <dialog ref={modal} className="Modal" onClose={onClose}>
       <div className="Modal-content">{children}</div>
+      <button className="Modal-close icon-button" onClick={onClose}>
+        <IconContext.Provider value={{ className: "icon" }}>
+          <BiX />
+        </IconContext.Provider>
+      </button>
     </dialog>
   );
 };
@@ -146,9 +154,6 @@ const SoundSettingsModal = ({ isOpen, onClose, onUpdateName }) => {
       >
         Confirm
       </button>
-      <br />
-      <br />
-      <button onClick={onClose}>Close</button>
     </Modal>
   );
 };
@@ -177,7 +182,10 @@ const Sound = ({ sound }) => {
           {sound.playing ? <BiPause /> : <BiPlay />} {name}
         </IconContext.Provider>
       </button>
-      <button className="Sound-settings" onClick={() => setDialogIsOpen(true)}>
+      <button
+        className="Sound-settings icon-button"
+        onClick={() => setDialogIsOpen(true)}
+      >
         <IconContext.Provider value={{ className: "icon" }}>
           <BiDotsVerticalRounded />
         </IconContext.Provider>
