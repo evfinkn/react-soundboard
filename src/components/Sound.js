@@ -14,21 +14,6 @@ export const Sound = ({ sound }) => {
   const [backgroundColor, setBackgroundColor] = useState("#E9967A");
   const [foregroundColor, setForegroundColor] = useState("#000000");
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
-  const dialog = (
-    <SoundSettingsModal
-      isOpen={dialogIsOpen}
-      onClose={() => setDialogIsOpen(false)}
-      onUpdateName={(name) => {
-        setName(name);
-        setDialogIsOpen(false);
-      }}
-      color={backgroundColor}
-      onUpdateColor={(color) => {
-        setBackgroundColor(color);
-        setForegroundColor(pickForegroundColor(color, "#000000", "#ffffff"));
-      }}
-    ></SoundSettingsModal>
-  );
   return (
     <div className="Sound-div" style={{ color: foregroundColor }}>
       <button
@@ -49,7 +34,19 @@ export const Sound = ({ sound }) => {
           <BiDotsVerticalRounded />
         </IconContext.Provider>
       </button>
-      {dialog}
+      <SoundSettingsModal
+        isOpen={dialogIsOpen}
+        onClose={() => setDialogIsOpen(false)}
+        onUpdateName={(name) => {
+          setName(name);
+          setDialogIsOpen(false);
+        }}
+        color={backgroundColor}
+        onUpdateColor={(color) => {
+          setBackgroundColor(color);
+          setForegroundColor(pickForegroundColor(color, "#000000", "#ffffff"));
+        }}
+      ></SoundSettingsModal>
     </div>
   );
 };
