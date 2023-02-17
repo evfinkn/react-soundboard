@@ -24,6 +24,7 @@ export const SoundSettingsModal = ({
         Confirm
       </button>
       <br />
+      <br />
       <DebouncePicker color={color} onChange={onUpdateColor} />
       <HexColorInput color={color} onChange={onUpdateColor} />
     </Modal>
