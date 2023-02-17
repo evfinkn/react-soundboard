@@ -9,7 +9,10 @@ import {
   BiPlay,
   BiX,
 } from "react-icons/bi";
+import { HexColorPicker, HexColorInput } from "react-colorful";
 import "./index.css";
+import { useDebounce } from "react-use";
+import { pickForegroundColor } from "./util";
 
 const useSounds = (urls) => {
   const objs = {};
@@ -140,13 +143,26 @@ const Modal = ({ children, isOpen, onClose }) => {
   );
 };
 
-const SoundSettingsModal = ({ isOpen, onClose, onUpdateName }) => {
+// https://codesandbox.io/s/dgqn0?file=/src/DebouncedPicker.js
+const DebouncePicker = ({ color, onChange }) => {
+  const [value, setValue] = useState(color);
+  useDebounce(() => onChange(value), 100, [value]);
+  return <HexColorPicker color={value} onChange={setValue} />;
+};
+
+const SoundSettingsModal = ({
+  isOpen,
+  onClose,
+  onUpdateName,
+  color,
+  onUpdateColor,
+}) => {
   const nameInput = useRef(null);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <label>
         {"Enter a name: "}
-        <input type="text" placeholder="name" ref={nameInput}></input>
+        <input type="text" placeholder="name" ref={nameInput} />
       </label>
       <button
         value="confirm"
@@ -154,6 +170,9 @@ const SoundSettingsModal = ({ isOpen, onClose, onUpdateName }) => {
       >
         Confirm
       </button>
+      <br />
+      <DebouncePicker color={color} onChange={onUpdateColor} />
+      <HexColorInput color={color} onChange={onUpdateColor} />
     </Modal>
   );
 };
@@ -164,6 +183,9 @@ const Sound = ({ sound }) => {
   const [name, setName] = useState(
     decodeURI(sound.url.pathname.split("/").at(-1))
   );
+  // #E9967A is darksalmon
+  const [backgroundColor, setBackgroundColor] = useState("#E9967A");
+  const [foregroundColor, setForegroundColor] = useState("#000000");
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const dialog = (
     <SoundSettingsModal
@@ -173,11 +195,21 @@ const Sound = ({ sound }) => {
         setName(name);
         setDialogIsOpen(false);
       }}
+      color={backgroundColor}
+      onUpdateColor={(color) => {
+        setBackgroundColor(color);
+        setForegroundColor(pickForegroundColor(color, "#000000", "#ffffff"));
+      }}
     ></SoundSettingsModal>
   );
   return (
-    <div className="Sound-div">
-      <button className="Sound" title={name} onClick={sound.toggle}>
+    <div className="Sound-div" style={{ color: foregroundColor }}>
+      <button
+        className="Sound"
+        title={name}
+        onClick={sound.toggle}
+        style={{ backgroundColor: backgroundColor }}
+      >
         <IconContext.Provider value={{ className: "icon" }}>
           {sound.playing ? <BiPause /> : <BiPlay />} {name}
         </IconContext.Provider>
