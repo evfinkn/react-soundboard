@@ -6,6 +6,7 @@ const parseRgbFromHex = (hex) => {
   return [r, g, b];
 };
 
+// https://stackoverflow.com/a/3943023
 const pickForegroundColor = (backgroundColor, darkColor, lightColor) => {
   const [r, g, b] = parseRgbFromHex(backgroundColor).map((c) => {
     c /= 255;
