@@ -31,6 +31,7 @@ body {
   border-width: 0px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
   font-size: 20px;
+  padding: 0px;
   position: relative;
 }
 
@@ -46,7 +47,7 @@ body {
 }
 
 .Modal-content {
-  padding: 15px 15px 15px 5px;
+  padding: 35px 35px 35px 25px;
 }
 
 .Modal-close {
