@@ -11,6 +11,8 @@ export const SoundSettingsModal = ({
   onUpdateColor,
   volume,
   onUpdateVolume,
+  playbackRate,
+  onUpdatePlaybackRate,
 }) => {
   const nameInput = useRef(null);
   return (
@@ -43,12 +45,27 @@ export const SoundSettingsModal = ({
         />
         <input
           type="number"
+          required
           min={0}
           max={100}
           value={volume}
-          required
           className="volume-input"
           onChange={(e) => onUpdateVolume(e.target.value)}
+        />
+      </label>
+      <br />
+      <br />
+      <label>
+        {"Playback rate: "}
+        <input
+          type="number"
+          required
+          min={0.1}
+          max={10}
+          step={0.1}
+          value={playbackRate}
+          className="playbackrate-input"
+          onChange={(e) => onUpdatePlaybackRate(e.target.value)}
         />
       </label>
     </Modal>

@@ -111,3 +111,7 @@ body {
 .volume-input {
   width: 4em;
 }
+
+.playbackrate-input {
+  width: 7em;
+}

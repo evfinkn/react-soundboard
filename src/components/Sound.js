@@ -14,6 +14,7 @@ export const Sound = ({ sound }) => {
   const [backgroundColor, setBackgroundColor] = useState("#E9967A");
   const [foregroundColor, setForegroundColor] = useState("#000000");
   const [volume, setVolume] = useState(100);
+  const [playbackRate, setPlaybackRate] = useState(1);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   return (
     <div className="Sound-div" style={{ color: foregroundColor }}>
@@ -51,6 +52,11 @@ export const Sound = ({ sound }) => {
         onUpdateVolume={(volume) => {
           setVolume(volume);
           sound.audio.volume = volume * 0.01;
+        }}
+        playbackRate={playbackRate}
+        onUpdatePlaybackRate={(playbackRate) => {
+          setPlaybackRate(playbackRate);
+          sound.audio.playbackRate = playbackRate;
         }}
       ></SoundSettingsModal>
     </div>
