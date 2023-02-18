@@ -9,6 +9,8 @@ export const SoundSettingsModal = ({
   onUpdateName,
   color,
   onUpdateColor,
+  volume,
+  onUpdateVolume,
 }) => {
   const nameInput = useRef(null);
   return (
@@ -27,6 +29,28 @@ export const SoundSettingsModal = ({
       <br />
       <DebouncePicker color={color} onChange={onUpdateColor} />
       <HexColorInput color={color} onChange={onUpdateColor} />
+      <br />
+      <br />
+      <label>
+        {"Volume: "}
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={volume}
+          className="volume-slider"
+          onChange={(e) => onUpdateVolume(e.target.value)}
+        />
+        <input
+          type="number"
+          min={0}
+          max={100}
+          value={volume}
+          required
+          className="volume-input"
+          onChange={(e) => onUpdateVolume(e.target.value)}
+        />
+      </label>
     </Modal>
   );
 };

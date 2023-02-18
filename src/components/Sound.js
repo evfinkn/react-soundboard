@@ -13,6 +13,7 @@ export const Sound = ({ sound }) => {
   // #E9967A is darksalmon
   const [backgroundColor, setBackgroundColor] = useState("#E9967A");
   const [foregroundColor, setForegroundColor] = useState("#000000");
+  const [volume, setVolume] = useState(100);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   return (
     <div className="Sound-div" style={{ color: foregroundColor }}>
@@ -45,6 +46,11 @@ export const Sound = ({ sound }) => {
         onUpdateColor={(color) => {
           setBackgroundColor(color);
           setForegroundColor(pickForegroundColor(color, "#000000", "#ffffff"));
+        }}
+        volume={volume}
+        onUpdateVolume={(volume) => {
+          setVolume(volume);
+          sound.audio.volume = volume * 0.01;
         }}
       ></SoundSettingsModal>
     </div>

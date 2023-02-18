@@ -103,3 +103,11 @@ body {
   right: 0px;
   top: 5px;
 }
+
+.volume-slider {
+  vertical-align: middle;
+}
+
+.volume-input {
+  width: 4em;
+}
