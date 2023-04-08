@@ -16,6 +16,27 @@ export const Sound = ({ sound }) => {
   const [volume, setVolume] = useState(100);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
+  const updateName = (name) => {
+    setName(name);
+    setDialogIsOpen(false);
+  };
+
+  const updateColor = (color) => {
+    setBackgroundColor(color);
+    setForegroundColor(pickForegroundColor(color, "#000000", "#ffffff"));
+  };
+
+  const updateVolume = (volume) => {
+    setVolume(volume);
+    sound.audio.volume = volume * 0.01;
+  };
+
+  const updatePlaybackRate = (playbackRate) => {
+    setPlaybackRate(playbackRate);
+    sound.audio.playbackRate = playbackRate;
+  };
+
   return (
     <div className="Sound-div" style={{ color: foregroundColor }}>
       <button
@@ -39,25 +60,13 @@ export const Sound = ({ sound }) => {
       <SoundSettingsModal
         isOpen={dialogIsOpen}
         onClose={() => setDialogIsOpen(false)}
-        onUpdateName={(name) => {
-          setName(name);
-          setDialogIsOpen(false);
-        }}
+        onUpdateName={updateName}
         color={backgroundColor}
-        onUpdateColor={(color) => {
-          setBackgroundColor(color);
-          setForegroundColor(pickForegroundColor(color, "#000000", "#ffffff"));
-        }}
+        onUpdateColor={updateColor}
         volume={volume}
-        onUpdateVolume={(volume) => {
-          setVolume(volume);
-          sound.audio.volume = volume * 0.01;
-        }}
+        onUpdateVolume={updateVolume}
         playbackRate={playbackRate}
-        onUpdatePlaybackRate={(playbackRate) => {
-          setPlaybackRate(playbackRate);
-          sound.audio.playbackRate = playbackRate;
-        }}
+        onUpdatePlaybackRate={updatePlaybackRate}
       ></SoundSettingsModal>
     </div>
   );
