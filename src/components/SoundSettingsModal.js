@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { HexColorInput } from "react-colorful";
 import { DebouncePicker } from "./DebouncePicker";
 import { Modal } from "./Modal";
 
