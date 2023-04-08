@@ -30,7 +30,6 @@ export const SoundSettingsModal = ({
       <br />
       <br />
       <DebouncePicker color={color} onChange={onUpdateColor} />
-      <HexColorInput color={color} onChange={onUpdateColor} />
       <br />
       <br />
       <label>
