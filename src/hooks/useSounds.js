@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 
 export default (urls) => {
-  const objs = {};
-  urls.forEach(
-    (url) =>
-      (objs[url] = {
-        playing: false,
-        audio: new Audio(url),
-        url: url,
-      })
-  );
-  const [sounds, setSounds] = useState(objs);
+  const [sounds, setSounds] = useState(() => {
+    const sounds = {};
+    urls.forEach(
+      (url) =>
+        (sounds[url] = {
+          playing: false,
+          audio: new Audio(url),
+          url: url,
+        })
+    );
+    return sounds;
+  });
 
   // toggle(url) returns a function that will toggle that url
   const toggle = (url) => () => {
