@@ -1,11 +1,11 @@
 import React from "react";
-import { DebouncePicker } from "./DebouncePicker";
-import { Modal } from "./Modal";
-import { NameInput } from "./NameInput";
-import { PlaybackRateInput } from "./PlaybackRateInput";
-import { VolumeInput } from "./VolumeInput";
+import DebouncePicker from "./DebouncePicker";
+import Modal from "./Modal";
+import NameInput from "./NameInput";
+import PlaybackRateInput from "./PlaybackRateInput";
+import VolumeInput from "./VolumeInput";
 
-export const SoundSettingsModal = ({
+export default ({
   isOpen,
   onClose,
   onUpdateName,

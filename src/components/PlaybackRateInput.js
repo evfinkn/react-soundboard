@@ -1,6 +1,6 @@
 import React from "react";
 
-export const PlaybackRateInput = ({
+export default ({
   playbackRate,
   onUpdatePlaybackRate,
   min = 0.1,

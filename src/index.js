@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Soundboard } from "./components/Soundboard";
+import Soundboard from "./components/Soundboard";
 import "./index.css";
 
 const urlStrings = [];

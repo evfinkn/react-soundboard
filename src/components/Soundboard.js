@@ -1,8 +1,8 @@
 import React from "react";
-import { SoundCategory } from "./SoundCategory";
-import { useSounds } from "../hooks/useSounds";
+import SoundCategory from "./SoundCategory";
+import useSounds from "../hooks/useSounds";
 
-export const Soundboard = ({ urls }) => {
+export default ({ urls }) => {
   const sounds = useSounds(urls);
 
   const categories = {};

@@ -1,8 +1,8 @@
 import React from "react";
-import { Collapsible } from "./Collapsible";
-import { Sound } from "./Sound";
+import Collapsible from "./Collapsible";
+import Sound from "./Sound";
 
-export const SoundCategory = ({ name, children, depth = 0 }) => {
+const SoundCategory = ({ name, children, depth = 0 }) => {
   // every url path (category path) ends with the empty string to indicate that
   // the children are sounds. That way, we don't need to check each child for
   // if it's a category or sound
@@ -28,3 +28,6 @@ export const SoundCategory = ({ name, children, depth = 0 }) => {
     </Collapsible>
   );
 };
+
+// can't export in the definition because of the recursive call
+export default SoundCategory

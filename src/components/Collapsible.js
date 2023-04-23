@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconContext } from "react-icons";
 import { BiChevronRight, BiChevronDown } from "react-icons/bi";
 
-export const Collapsible = ({ heading, depth, children }) => {
+export default ({ heading, depth, children }) => {
   const [hidden, setHidden] = useState(false);
 
   const span = (

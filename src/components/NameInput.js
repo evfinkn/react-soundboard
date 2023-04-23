@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-export const NameInput = ({ onUpdateName }) => {
+export default ({ onUpdateName }) => {
   const nameInput = useRef(null);
   return (
     <div>

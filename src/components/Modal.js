@@ -3,7 +3,7 @@ import { IconContext } from "react-icons";
 import { BiX } from "react-icons/bi";
 import { useClickAway } from "react-use";
 
-export const Modal = ({ children, isOpen, onClose }) => {
+export default ({ children, isOpen, onClose }) => {
   const modal = useRef(null);
   const modalContent = useRef(null);
 

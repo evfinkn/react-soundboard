@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
-export const useSounds = (urls) => {
   const objs = {};
   urls.forEach(
     (url) =>
       (objs[url] = {
+export default (urls) => {
         playing: false,
         audio: new Audio(url),
         url: url,

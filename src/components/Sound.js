@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { IconContext } from "react-icons";
 import { BiDotsVerticalRounded, BiPause, BiPlay } from "react-icons/bi";
-import { SoundSettingsModal } from "./SoundSettingsModal";
+import SoundSettingsModal from "./SoundSettingsModal";
 import { pickForegroundColor } from "../util";
 
-export const Sound = ({ sound }) => {
+export default ({ sound }) => {
   // .split("/").at(-1) gets the audio file name
   // decodeURI to show the expected file name i.e. including spaces
   const [name, setName] = useState(

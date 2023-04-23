@@ -1,6 +1,6 @@
 import React from "react";
 
-export const VolumeInput = ({
+export default ({
   volume,
   onUpdateVolume,
   min = 0,
