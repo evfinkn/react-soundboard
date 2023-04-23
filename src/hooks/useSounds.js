@@ -44,24 +44,12 @@ export default (urls) => {
     });
   });
 
-  const handleEnded = (event) => sounds[event.target.src].toggle();
-
-  // run on mount and unmount
   // handles updating the audio's "playing" property after the audio has ended
-  useEffect(() => {
-    Object.values(sounds).forEach((sound) => {
-      // when an audio clip ends, it needs to update "playing"
-      sound.audio.addEventListener("ended", handleEnded);
-    });
-    // returning a function makes that function get called on unmount
-    return () => {
-      // cleans up by removing event listeners so that
-      // the audio elements can be garbage collected
-      Object.values(sounds).forEach((sound) => {
-        sound.audio.removeEventListener("ended", handleEnded);
-      });
-    }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // [] makes this run only on mount and unmount (and not on update)
+  const handleEnded = (event) => sounds[event.target.src].toggle();
+  Object.values(sounds).forEach((sound) => {
+    // when an audio clip ends, it needs to update "playing"
+    sound.audio.addEventListener("ended", handleEnded);
+  });
 
   return sounds;
 };
